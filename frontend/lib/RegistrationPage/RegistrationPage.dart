@@ -156,6 +156,32 @@ class RegistrationShape extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 32,),
+                SizedBox(
+                  width: 128,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF5EC6E7),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: const Text(
+                      'Back to Log in',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ],

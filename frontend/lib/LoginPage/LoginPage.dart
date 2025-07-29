@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../RegistrationPage/RegistrationPage.dart';
+import '../HomePage/HomePage.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatelessWidget {
@@ -120,7 +121,12 @@ class TransparentShape extends StatelessWidget {
                     width: 128,
                     height: 48,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF5EC6E7),
                         shape: RoundedRectangleBorder(
