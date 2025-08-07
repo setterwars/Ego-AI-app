@@ -2,7 +2,6 @@ package com.tracker.habit.service;
 
 import com.tracker.habit.model.Task;
 import com.tracker.habit.repository.TaskRepository;
-import com.tracker.habit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,7 @@ public class TaskService {
 
     public Task SetTaskUnDone(long taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+            .orElseThrow(() -> new RuntimeException("Task not found"));
         task.setUnDone();
         return taskRepository.save(task);
     }

@@ -5,6 +5,12 @@ import com.tracker.habit.model.User;
 import com.tracker.habit.service.TaskService;
 import com.tracker.habit.service.UserService;
 import com.tracker.habit.security.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +20,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/tasks")
+@Tag(name = "Tasks", description = "Task management endpoints")
+@SecurityRequirement(name = "bearerAuth")
 public class TaskController {
     @Autowired
     private TaskService taskService;
@@ -25,7 +33,14 @@ public class TaskController {
     private JwtUtil jwtUtil;
 
     @PostMapping("")
-    public ResponseEntity<?> createTask(@RequestBody Map<String, Object> payload, @RequestHeader("Authorization") String authHeader) {
+    @Operation(summary = "Create a new task", description = "Create a new task for the authenticated user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Task created successfully"),
+        @ApiResponse(responseCode = "401", description = "Invalid or missing JWT token")
+    })
+    public ResponseEntity<?> createTask(
+            @RequestBody Map<String, Object> payload,
+            @Parameter(hidden = true) @RequestHeader("Authorization") String authHeader) {
         String token = extractToken(authHeader);
         String email = jwtUtil.extractEmail(token);
         User user = userService.findByEmail(email);
@@ -40,7 +55,15 @@ public class TaskController {
     }
 
     @PostMapping("/{id}/done")
-    public ResponseEntity<?> setTaskDone(@PathVariable long id, @RequestHeader("Authorization") String authHeader) {
+    @Operation(summary = "Mark task as done", description = "Mark a specific task as completed")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Task marked as done successfully"),
+        @ApiResponse(responseCode = "401", description = "Invalid or missing JWT token"),
+        @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    public ResponseEntity<?> setTaskDone(
+            @PathVariable @Parameter(description = "Task ID") long id,
+            @Parameter(hidden = true) @RequestHeader("Authorization") String authHeader) {
         String token = extractToken(authHeader);
         if (!jwtUtil.validateToken(token)) {
             return ResponseEntity.badRequest().body("Invalid token");
@@ -57,7 +80,15 @@ public class TaskController {
     }
 
     @PostMapping("/{id}/undone")
-    public ResponseEntity<?> setTaskUnDone(@PathVariable long id, @RequestHeader("Authorization") String authHeader) {
+    @Operation(summary = "Mark task as not done", description = "Mark a specific task as not completed")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Task marked as not done successfully"),
+        @ApiResponse(responseCode = "401", description = "Invalid or missing JWT token"),
+        @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    public ResponseEntity<?> setTaskUnDone(
+            @PathVariable @Parameter(description = "Task ID") long id,
+            @Parameter(hidden = true) @RequestHeader("Authorization") String authHeader) {
         String token = extractToken(authHeader);
         if (!jwtUtil.validateToken(token)) {
             return ResponseEntity.badRequest().body("Invalid token");
