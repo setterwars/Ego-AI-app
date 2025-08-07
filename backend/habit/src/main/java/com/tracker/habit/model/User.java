@@ -41,4 +41,8 @@ public class User {
     public String getRole() {
         return this.role;
     }
+
+    public long getId() {
+        return this.id;
+    }
 }
