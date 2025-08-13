@@ -1,1 +1,1 @@
-# BestHabitTracker
+# Ego AI app
